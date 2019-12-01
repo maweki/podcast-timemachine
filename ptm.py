@@ -9,12 +9,15 @@ def download(url):
 
 def delayFeed(url, delay):
     dom = parse(download(url))
-    delta = timedelta(days=delay)
-    fix(dom, delta)
+    fix(dom, delay)
     return dom.toxml()
 
-def fix(root, delta):
+def fix(root, delay):
+    delta = timedelta(days=delay)
     if root.nodeType == root.ELEMENT_NODE:
+        if root.tagName == "title":
+            titlenode = root.childNodes[0]
+            titlenode.replaceWholeText(titlenode.nodeValue + ' (DELAYED ' + str(delay) + ' days)')
         if root.tagName == "pubDate":
             datenode = root.childNodes[0]
             d = parsedate(datenode.nodeValue) + delta
@@ -25,4 +28,4 @@ def fix(root, delta):
             else:
                 datenode.replaceWholeText(str(d))
     for child in root.childNodes:
-        fix(child, delta)
+        fix(child, delay)

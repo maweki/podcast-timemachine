@@ -7,7 +7,8 @@ app = Flask(__name__)
 def root():
     return send_file("page.html")
 
-@app.route("/rss/", methods=['GET'])
+@app.route("/rss", methods=['GET'])
+@app.route("/feed", methods=['GET'])
 def rss():
     try:
         feed = request.args.get('feed')

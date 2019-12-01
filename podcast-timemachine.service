@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve podcast time-machine
+After=network.target
+
+[Service]
+User=maweki
+Group=maweki
+WorkingDirectory=/home/maweki/podcast-timemachine
+Environment="PATH=/home/maweki/podcast-timemachine/venv/bin"
+ExecStart=/home/maweki/podcast-timemachine/venv/bin/uwsgi --ini podcast-timemachine.ini
+
+[Install]
+WantedBy=multi-user.target
